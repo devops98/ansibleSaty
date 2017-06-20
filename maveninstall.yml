@@ -1,0 +1,26 @@
+---
+- hosts: all
+  remote_user: vagrant
+  become: True
+  tasks:
+
+  - name: Install add apt repostory
+    become: yes
+    apt: name=software-properties-common state=latest
+
+  - name: Installing gtar 
+    apt: pkg=unzip state=present
+
+  - name: Download Apache Maven 
+    get_url: url=http://www-eu.apache.org/dist/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz  dest=/tmp/apache-maven-3.5.0-bin.tar.gz
+
+
+  - name:  create a maven direc
+    shell: chdir=/tmp creates=/opt/apache-maven-3.5.0  tar -zxf apache-maven-3.5.0-bin.tar.gz -C /opt
+  
+#  - name: use unarchive instead of tar
+#    unarchive: src=/tmp/apache-maven-3.5.0-bin.tar.gz  dest=/opt/apache-maven-3.5.0  remote_src=True
+# What is missing
+
+  - name: Update path for maven use
+    shell: export PATH=/opt/apache-maven-3.5.0/bin:$PATH
